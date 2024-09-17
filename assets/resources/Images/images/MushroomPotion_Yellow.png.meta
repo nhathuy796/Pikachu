@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "65972f65-ab82-4c7d-8f67-d51fa7309a4b",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "65972f65-ab82-4c7d-8f67-d51fa7309a4b@6c48a",
+      "displayName": "MushroomPotion_Yellow",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "65972f65-ab82-4c7d-8f67-d51fa7309a4b",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "65972f65-ab82-4c7d-8f67-d51fa7309a4b@f9941",
+      "displayName": "MushroomPotion_Yellow",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 15.5,
+        "offsetY": -4.5,
+        "trimX": 150,
+        "trimY": 89,
+        "width": 731,
+        "height": 831,
+        "rawWidth": 1000,
+        "rawHeight": 1000,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 1000,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -365.5,
+            -415.5,
+            0,
+            365.5,
+            -415.5,
+            0,
+            -365.5,
+            415.5,
+            0,
+            365.5,
+            415.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            150,
+            911,
+            881,
+            911,
+            150,
+            80,
+            881,
+            80
+          ],
+          "nuv": [
+            0.15,
+            0.08,
+            0.881,
+            0.08,
+            0.15,
+            0.911,
+            0.881,
+            0.911
+          ],
+          "minPos": [
+            -365.5,
+            -415.5,
+            0
+          ],
+          "maxPos": [
+            365.5,
+            415.5,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "65972f65-ab82-4c7d-8f67-d51fa7309a4b@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "hasAlpha": true,
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "65972f65-ab82-4c7d-8f67-d51fa7309a4b@6c48a"
+  }
+}

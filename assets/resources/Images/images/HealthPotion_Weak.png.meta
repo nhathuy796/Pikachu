@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "791974bd-130f-486a-ad6e-82ad6f81f9ce",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "791974bd-130f-486a-ad6e-82ad6f81f9ce@6c48a",
+      "displayName": "HealthPotion_Weak",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "791974bd-130f-486a-ad6e-82ad6f81f9ce",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "791974bd-130f-486a-ad6e-82ad6f81f9ce@f9941",
+      "displayName": "HealthPotion_Weak",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 7,
+        "offsetY": 2,
+        "trimX": 322,
+        "trimY": 96,
+        "width": 370,
+        "height": 804,
+        "rawWidth": 1000,
+        "rawHeight": 1000,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 1000,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -185,
+            -402,
+            0,
+            185,
+            -402,
+            0,
+            -185,
+            402,
+            0,
+            185,
+            402,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            322,
+            904,
+            692,
+            904,
+            322,
+            100,
+            692,
+            100
+          ],
+          "nuv": [
+            0.322,
+            0.1,
+            0.692,
+            0.1,
+            0.322,
+            0.904,
+            0.692,
+            0.904
+          ],
+          "minPos": [
+            -185,
+            -402,
+            0
+          ],
+          "maxPos": [
+            185,
+            402,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "791974bd-130f-486a-ad6e-82ad6f81f9ce@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "hasAlpha": true,
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "791974bd-130f-486a-ad6e-82ad6f81f9ce@6c48a"
+  }
+}

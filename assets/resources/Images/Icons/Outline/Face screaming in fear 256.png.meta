@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "c2fa2bac-86b3-49f7-9032-b28693bb368f",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "c2fa2bac-86b3-49f7-9032-b28693bb368f@6c48a",
+      "displayName": "Face screaming in fear 256",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "c2fa2bac-86b3-49f7-9032-b28693bb368f",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "c2fa2bac-86b3-49f7-9032-b28693bb368f@f9941",
+      "displayName": "Face screaming in fear 256",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": -1.5,
+        "trimX": 3,
+        "trimY": 3,
+        "width": 250,
+        "height": 253,
+        "rawWidth": 256,
+        "rawHeight": 256,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 256,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -125,
+            -126.5,
+            0,
+            125,
+            -126.5,
+            0,
+            -125,
+            126.5,
+            0,
+            125,
+            126.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            3,
+            253,
+            253,
+            253,
+            3,
+            0,
+            253,
+            0
+          ],
+          "nuv": [
+            0.01171875,
+            0,
+            0.98828125,
+            0,
+            0.01171875,
+            0.98828125,
+            0.98828125,
+            0.98828125
+          ],
+          "minPos": [
+            -125,
+            -126.5,
+            0
+          ],
+          "maxPos": [
+            125,
+            126.5,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "c2fa2bac-86b3-49f7-9032-b28693bb368f@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "hasAlpha": true,
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "c2fa2bac-86b3-49f7-9032-b28693bb368f@6c48a"
+  }
+}
