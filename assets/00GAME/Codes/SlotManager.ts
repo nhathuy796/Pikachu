@@ -17,9 +17,7 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
 
     @property(SlotHandle) public currentSelect: SlotHandle[] = [null,null];
     @property(Number) currentIDs: Number[] = [];
-    @property(Sprite) lineCtrl: Sprite;
     @property(Graphics) graphics: Graphics;
-    @property(Sprite) slotGB: Sprite;
 
     start() {
         SlotManager.instance = this;
@@ -27,7 +25,7 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
     }
 
     Init(){
-        resources.loadDir("Images/pokemons", SpriteFrame, this.onResourcesLoadDone.bind(this));
+        resources.loadDir("Images/pokemons/phase1", SpriteFrame, this.onResourcesLoadDone.bind(this));
     }
  
     onResourcesLoadDone(err, spriteFrames){
@@ -46,12 +44,8 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
         for(let x = 0; x < this.width; x++){
             let col = [];
             for(let y = 0; y < this.height; y++){
-                let newSlot = instantiate(this.nodeSlot);
-                 
-                newSlot.setWorldPosition(new Vec3(x,y,0));
-                newSlot.setParent(director.getScene());
-                 
-                col.push(newSlot.getComponent(SlotHandle));  
+              
+                col.push(null);  
             }
  
             this.slots.push(col); 
@@ -65,44 +59,44 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
     }
 
     calculateIDs(){
+        let configRange = 1;
         let maxCapacity = Math.floor( (this.width * this.height) / 2); 
         for(let i = 0; i< maxCapacity; i++){
-            let imageRanIndex = Math.floor(math.random() * this.images.length/3);
+            let imageRanIndex = Math.floor(math.random() * this.images.length/configRange);
      
             while(this.currentIDs.filter(item => item == imageRanIndex).length / maxCapacity * 100 >= 30){
-                imageRanIndex = Math.floor(math.random() * this.images.length/3);
+                imageRanIndex = Math.floor(math.random() * this.images.length/configRange);
             } 
             this.currentIDs.push(imageRanIndex);
             
-            this.attachIDs(imageRanIndex);
-            this.attachIDs(imageRanIndex);
+            let firstSlot = this.attachIDs(imageRanIndex);
+            this.attachIDs(imageRanIndex,i < maxCapacity?firstSlot:null);
         }
     }
 
-    attachIDs(imageRanIndex){
+    attachIDs(imageRanIndex,pos = null){
         let ranX = Math.floor(math.random() * this.width);
         let ranY = Math.floor(math.random() * this.height);
-        while(this.slots[ranX][ranY].ID != -1){
+        let count = 0;
+        while(this.slots[ranX][ranY] != null || (pos != null && this.checkAnyConnect([new Vec2(ranX,ranY),pos]) == null )){
             ranX = Math.floor(math.random() * this.width);
-            ranY = Math.floor(math.random() * this.height); 
+            ranY = Math.floor(math.random() * this.height);  
+            count++;
+            if(count > 50){
+                console.error(`I tried!`);
+                if(this.slots[ranX][ranY] == null)
+                    break;
+            }
         }
         
+        let newSlot = instantiate(this.nodeSlot);
+                 
+        newSlot.setWorldPosition(new Vec3(ranX,ranY,0));
+        newSlot.setParent(director.getScene());
+        this.slots[ranX][ranY] = newSlot.getComponent(SlotHandle);
         this.slots[ranX][ranY].Init(this.slots[ranX][ranY].node.worldPosition,imageRanIndex, this.images[imageRanIndex]);
-    }
-
-    convertScreenToUI(screenPos: Vec3): Vec3 {
-        const uiPos = new Vec3();
-
-        // Lấy kích thước của canvas
-        const canvasSize = view.getVisibleSize();
-
-        // Chuyển đổi tọa độ màn hình sang tọa độ trong canvas
-        const x = screenPos.x - canvasSize.width / 2;
-        const y = screenPos.y - canvasSize.height / 2;
-
-        uiPos.set(x, y, 0);
-        return uiPos;
-    }
+        return new Vec2(ranX,ranY);
+    } 
 
     selectSlot(slotHandle: SlotHandle){
        
@@ -125,35 +119,9 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
         this.currentSelect[1] = slotHandle;
         slotHandle.selected();
        
-        if( this.checkStraight([this.currentSelect[0].Pos,this.currentSelect[1].Pos]).isOke){
-            //
-            console.log("Connect straight");
-            let h1 = this.convertScreenToUI( this.cam.worldToScreen(new Vec3(this.currentSelect[0].Pos.x,this.currentSelect[0].Pos.y)) );
-            let h2 = this.convertScreenToUI( this.cam.worldToScreen(new Vec3(this.currentSelect[1].Pos.x,this.currentSelect[1].Pos.y)) );
-
-            let realPos;
-            let h3 = this.camCanvas.convertToUINode(this.cam.worldToScreen(new Vec3(this.currentSelect[0].Pos.x,this.currentSelect[0].Pos.y)),this.lineCtrl.node,realPos)
-            this.lineCtrl.node.setWorldPosition(h3);
-             
-            this.graphics.moveTo(h1.x, h1.y); 
-            this.graphics.lineTo(h2.x, h2.y);    
-            this.graphics.stroke();  
-
-            this.correctDel();
-            return;
-        } 
-       
-        if( this.checkOneBreak([this.currentSelect[0].Pos,this.currentSelect[1].Pos]).isOke){
-            //
-            console.log("Connect one break");
-            this.correctDel();
-            return;
-        }
-
-        if( this.check2Breaks().isOke){
-            //
-            console.log("Connect 2 break");
-            this.correctDel();
+        let checkIsConnect = this.checkAnyConnect([this.currentSelect[0].Pos,this.currentSelect[1].Pos]);
+        if(checkIsConnect != null){
+            this.drawLine(checkIsConnect?.points);
             return;
         }
 
@@ -161,8 +129,33 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
         console.log("Cant connect break");
     }
 
+    checkAnyConnect(currentSelect){
+        let checkStraight = this.checkStraight(currentSelect);
+        if( checkStraight.isOke){
+            //
+            console.log("Connect straight");
+            return checkStraight;
+        } 
+       
+        let checkOne = this.checkOneBreak(currentSelect);
+        if( checkOne.isOke){
+            //
+            console.log("Connect one break");
+            return checkOne;
+        }
+
+        let check2 = this.check2Breaks(currentSelect);
+        if( check2.isOke){
+            //
+            console.log("Connect 2 break");
+            return check2;
+        }
+
+        return null;
+    }
+
     checkStraight(currentSelect){
-        console.log(`check straight ${currentSelect[0]}-${currentSelect[1]}`);
+        //console.log(`check straight ${currentSelect[0]}-${currentSelect[1]}`);
         if(currentSelect[0].x === currentSelect[1].x){
             let X = currentSelect[0].x;
             let tmpY = currentSelect[0].y - currentSelect[1].y;
@@ -172,8 +165,9 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
                 if(this.slots[X] !== undefined && this.slots[X][i] !== null && this.slots[X][i] !== undefined)
                     return {isOke: false};
             }
-            console.log(`${currentSelect[0]}-${currentSelect[1]} connect straight`);
-            return {isOke: true};
+            //console.log(`${currentSelect[0]}-${currentSelect[1]} connect straight`);
+            return {isOke: true,points:[new Vec3(currentSelect[0].x,currentSelect[0].y),
+                                        new Vec3(currentSelect[1].x,currentSelect[1].y)]};
         }
 
         if(currentSelect[0].y === currentSelect[1].y){
@@ -186,8 +180,9 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
                 if(this.slots[i] !== undefined && this.slots[i][Y] !== null && this.slots[i][Y] !== undefined)
                     return {isOke: false};
             }
-            console.log(`${currentSelect[0]}-${currentSelect[1]} connect straight`);
-            return {isOke: true};
+            //console.log(`${currentSelect[0]}-${currentSelect[1]} connect straight`);
+            return {isOke: true,points:[new Vec3(currentSelect[0].x,currentSelect[0].y),
+                                        new Vec3(currentSelect[1].x,currentSelect[1].y)]};
         }
 
         return {isOke: false};
@@ -198,7 +193,7 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
       
         let pos1 = currentSelect[0];
         let pos2 = currentSelect[1];
-        console.log(`check 1 break ${pos1}-${pos2}`);
+        //console.log(`check 1 break ${pos1}-${pos2}`);
        
         if(this.checkStraight(currentSelect).isOke  ){
             return {isOke: true,points:[]};
@@ -217,7 +212,9 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
             
             if(this.checkStraight([new Vec2(pos1.x,pos2.y),currentSelect[0]]).isOke && this.checkStraight([new Vec2(pos1.x,pos2.y),currentSelect[1]]).isOke ){
                
-                return {isOke: true,points:[new Vec2(pos1.x,pos2.y)]};
+                return {isOke: true,points: [new Vec3(pos1.x,pos1.y),
+                                             new Vec3(pos1.x,pos2.y),
+                                             new Vec3(pos2.x,pos2.y)]};
             }
         }
 
@@ -225,44 +222,74 @@ export class SlotManager extends HuynnLib.Singleton<SlotManager> {
            
             if(this.checkStraight([new Vec2(pos2.x,pos1.y),currentSelect[0]]).isOke && this.checkStraight([new Vec2(pos2.x,pos1.y),currentSelect[1]]).isOke ){
                
-                return {isOke: true,points:[new Vec2(pos2.x,pos1.y)]};
+                return {isOke: true,points:[new Vec3(pos1.x,pos1.y),
+                                            new Vec3(pos2.x,pos1.y),
+                                            new Vec3(pos2.x,pos2.y)]};
             }
         }
 
         return {isOke: false};
     }
-    check2Breaks(){
-        console.log(`check 2 breaks ${this.currentSelect[0].Pos} -- ${this.currentSelect[1].Pos}`)
-        let X = this.currentSelect[0].Pos.x;
-        let Y = this.currentSelect[0].Pos.y;
+    check2Breaks(currentSelect){
+        //console.log(`check 2 breaks ${currentSelect[0]} -- ${currentSelect[1]}`)
+        let X = currentSelect[0].x;
+        let Y = currentSelect[0].y;
+ 
  
         for(let y = -1; y <= this.height; y++){
+             
             if(this.slots[X][y] !== undefined && this.slots[X][y] !== null)
                 continue;
-            if(!this.checkStraight([new Vec2(X,y), this.currentSelect[0].Pos]).isOke){
+            if(!this.checkStraight([new Vec2(X,y), currentSelect[0]]).isOke){
                 continue;
             }
-            let check1 = this.checkOneBreak([new Vec2(X,y), this.currentSelect[1].Pos]);
+            let check1 = this.checkOneBreak([new Vec2(X,y), currentSelect[1]]);
             if(check1.isOke){
-                check1.points.push(new Vec2(X,y));
+                check1.points.unshift(new Vec3(X,Y)); 
                 return {isOke: true, points: check1.points};
             }
         }
 
         for(let x = -1; x <= this.width; x++){
+            
             if(this.slots[x] != undefined && this.slots[x][Y] != null)
                 continue;
-            if(!this.checkStraight([new Vec2(x,Y), this.currentSelect[0].Pos]).isOke){
+            if(!this.checkStraight([new Vec2(x,Y), currentSelect[0]]).isOke){
                 continue;
             }
-            let check1 = this.checkOneBreak([new Vec2(x,Y), this.currentSelect[1].Pos]);
+            let check1 = this.checkOneBreak([new Vec2(x,Y), currentSelect[1]]);
             if(check1.isOke){
-                check1.points.push(new Vec2(x,Y));
+                check1.points.unshift(new Vec3(X,Y));
                 return {isOke: true, points: check1.points}; 
             }
         }
 
         return {isOke: false};
+    }
+
+    drawLine(currentSelect){
+        if(currentSelect.length <= 1)
+            return;
+
+        let out;
+        
+        let tmp =  new Vec3(currentSelect[0].x,currentSelect[0].y);
+        let h1 = this.cam.convertToUINode(tmp, this.graphics.node.parent, out);
+        this.graphics.moveTo(h1.x, h1.y); 
+
+        for(let i = 1; i< currentSelect.length; i++){
+            tmp = new Vec3(currentSelect[i].x,currentSelect[i].y);
+            h1 = this.cam.convertToUINode(tmp, this.graphics.node.parent, out);
+            this.graphics.lineTo(h1.x, h1.y);   
+        } 
+         
+        this.graphics.stroke();  
+
+        this.scheduleOnce(()=>{
+            this.graphics.clear();
+            this.correctDel();
+        },0.5);
+
     }
 
     correctDel(){
